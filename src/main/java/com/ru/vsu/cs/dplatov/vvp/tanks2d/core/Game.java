@@ -1,6 +1,6 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.core;
 
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.ControllersAndStates;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import javafx.application.Application;
@@ -23,10 +23,10 @@ public class Game extends Application {
         Pane root = new Pane();
         GameSceneManager.setPane(root);
         List<GameObject> gameObjects = createGameObjects();
-        root.setBackground(Background.fill(Paint.valueOf("white")));
+        root.setBackground(Background.fill(Paint.valueOf("green")));
         Scene scene = new Scene(root, 800, 600);
-        Controllers controllers = new Controllers(new HashSet<>(), new ArrayList<>(), gameObjects);
-        controllers.setupControls(scene, gameObjects.stream().filter(obj -> obj instanceof Tank).map(obj -> (Tank) obj).toList().get(0), gameObjects.stream().filter(obj -> obj instanceof Tank).map(obj -> (Tank) obj).toList().get(1));
+        ControllersAndStates controllersAndStates = new ControllersAndStates(new HashSet<>(), new ArrayList<>());
+        controllersAndStates.setupControls(scene, gameObjects.stream().filter(obj -> obj instanceof Tank).map(obj -> (Tank) obj).toList().get(0), gameObjects.stream().filter(obj -> obj instanceof Tank).map(obj -> (Tank) obj).toList().get(1));
         stage.setScene(scene);
         stage.show();
     }

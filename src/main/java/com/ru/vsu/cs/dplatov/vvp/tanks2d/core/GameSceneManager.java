@@ -22,6 +22,12 @@ public class GameSceneManager {
         return GameMap.createMap2();
     }
 
+    public static void addToViewDecorationsToPane(List<ImageView> viewsList) {
+        for (ImageView imageView : viewsList) {
+            pane.getChildren().add(imageView);
+        }
+    }
+
     public static void addToViewGameObjectsToPane(List<GameObject> objects) {
         for (GameObject obj : objects) {
             pane.getChildren().add(obj.getView());

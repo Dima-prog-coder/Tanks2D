@@ -13,57 +13,59 @@ import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.addToViewG
 
 public class Tank extends GameObject {
     private LocalTime lastShootTime = LocalTime.now();
+    private final List<GameObject> gameObjects;
 
-    public Tank(int x, int y, ImageView view) {
+    public Tank(int x, int y, ImageView view, List<GameObject> gameObjects) {
         super(x, y, view);
+        this.gameObjects = gameObjects;
         getView().setX(this.getX());
         getView().setY(this.getY());
     }
 
-    public void moveTankUp(List<GameObject> gameObjects) {
+    public void moveTankUp() {
         getView().setRotate(0);
-        if (!isCollide(gameObjects, this.getX(), this.getY() - Config.speed)) {
+        if (!isCollide(this.getX(), this.getY() - Config.speed)) {
             this.setY(this.getY() - Config.speed);
             getView().setY(this.getY());
         }
     }
 
-    public void moveTankDown(List<GameObject> gameObjects) {
+    public void moveTankDown() {
         getView().setRotate(180);
-        if (!isCollide(gameObjects, this.getX(), this.getY() + Config.speed)) {
+        if (!isCollide(this.getX(), this.getY() + Config.speed)) {
             this.setY(this.getY() + Config.speed);
             getView().setY(this.getY());
         }
     }
 
-    public void moveTankLeft(List<GameObject> gameObjects) {
+    public void moveTankLeft() {
         getView().setRotate(-90);
-        if (!isCollide(gameObjects, this.getX() - Config.speed, this.getY())) {
+        if (!isCollide(this.getX() - Config.speed, this.getY())) {
             this.setX(this.getX() - Config.speed);
             getView().setX(this.getX());
         }
     }
 
-    public void moveTankRight(List<GameObject> gameObjects) {
+    public void moveTankRight() {
         getView().setRotate(90);
-        if (!isCollide(gameObjects, this.getX() + Config.speed, this.getY())) {
+        if (!isCollide(this.getX() + Config.speed, this.getY())) {
             this.setX(this.getX() + Config.speed);
             getView().setX(this.getX());
         }
     }
 
-    public void tankShoot(List<GameObject> gameObjects, List<Bullet> activeBullets) {
+    public void tankShoot(List<Bullet> activeBullets) {
         if (Math.abs(Duration.between(LocalTime.now(), lastShootTime).getSeconds()) > Config.reload) {
             lastShootTime = LocalTime.now();
-            Bullet bullet = new Bullet(this.getX(), this.getY(), new ImageView(new Image(getClass().getResourceAsStream("/img/bullet.png"))), this);
+            Bullet bullet = new Bullet(getX() + (int) getView().getImage().getWidth() / 2 - Config.getBulletSizes() / 2, getY() + (int) getView().getImage().getHeight() / 2 - Config.getBulletSizes() / 2, new ImageView(new Image(getClass().getResourceAsStream(Config.bulletImgPath))), this, gameObjects);
             bullet.getView().setRotate(this.getView().getRotate());
             addToViewGameObjectsToPane(bullet);
             activeBullets.add(bullet);
         }
     }
 
-    private boolean isCollide(List<GameObject> objects, int newX, int newY) {
-        for (GameObject gameObject : objects) {
+    private boolean isCollide(int newX, int newY) {
+        for (GameObject gameObject : gameObjects) {
             if (newX < gameObject.getX() + gameObject.getView().getImage().getWidth() && newX + this.getView().getImage().getWidth() > gameObject.getX() && newY < gameObject.getY() + gameObject.getView().getImage().getHeight() && newY + this.getView().getImage().getHeight() > gameObject.getY() && this != gameObject) {
                 return true;
             }

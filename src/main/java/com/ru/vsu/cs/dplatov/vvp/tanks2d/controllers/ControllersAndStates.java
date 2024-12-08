@@ -2,28 +2,24 @@ package com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers;
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Bullet;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.removeViewGameObjectFromPane;
 
-public class Controllers {
+public class ControllersAndStates {
     private final Set<KeyCode> activeKeys;
     private final List<Bullet> activeBullets;
-    private final List<GameObject> gameObjects;
 
-    public Controllers(Set<KeyCode> activeKeys, List<Bullet> activeBullets, List<GameObject> gameObjects) {
+    public ControllersAndStates(Set<KeyCode> activeKeys, List<Bullet> activeBullets) {
         this.activeKeys = activeKeys;
         this.activeBullets = activeBullets;
-        this.gameObjects = gameObjects;
     }
 
 
@@ -38,7 +34,7 @@ public class Controllers {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                updateTanksState(gameObjects, activeBullets, tank1, tank2);
+                updateTanksState(activeBullets, tank1, tank2);
                 updateBulletsState(activeBullets);
             }
         };
@@ -46,31 +42,31 @@ public class Controllers {
         timer.start();
     }
 
-    private void updateTanksState(List<GameObject> gameObjects, List<Bullet> activeBullets, Tank tank1, Tank tank2) {
+    private void updateTanksState(List<Bullet> activeBullets, Tank tank1, Tank tank2) {
         if (activeKeys.contains(KeyCode.W)) {
-            tank1.moveTankUp(gameObjects);
+            tank1.moveTankUp();
         } else if (activeKeys.contains(KeyCode.A)) {
-            tank1.moveTankLeft(gameObjects);
+            tank1.moveTankLeft();
         } else if (activeKeys.contains(KeyCode.D)) {
-            tank1.moveTankRight(gameObjects);
+            tank1.moveTankRight();
         } else if (activeKeys.contains(KeyCode.S)) {
-            tank1.moveTankDown(gameObjects);
+            tank1.moveTankDown();
         }
         if (activeKeys.contains(KeyCode.SPACE)) {
-            tank1.tankShoot(gameObjects, activeBullets);
+            tank1.tankShoot(activeBullets);
         }
 
         if (activeKeys.contains(KeyCode.UP)) {
-            tank2.moveTankUp(gameObjects);
+            tank2.moveTankUp();
         } else if (activeKeys.contains(KeyCode.LEFT)) {
-            tank2.moveTankLeft(gameObjects);
+            tank2.moveTankLeft();
         } else if (activeKeys.contains(KeyCode.RIGHT)) {
-            tank2.moveTankRight(gameObjects);
+            tank2.moveTankRight();
         } else if (activeKeys.contains(KeyCode.DOWN)) {
-            tank2.moveTankDown(gameObjects);
+            tank2.moveTankDown();
         }
         if (activeKeys.contains(KeyCode.ENTER)) {
-            tank2.tankShoot(gameObjects, activeBullets);
+            tank2.tankShoot(activeBullets);
         }
     }
 
