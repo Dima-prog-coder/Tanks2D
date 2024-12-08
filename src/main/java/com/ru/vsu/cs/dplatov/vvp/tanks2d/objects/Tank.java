@@ -55,7 +55,7 @@ public class Tank extends GameObject {
     public void tankShoot(List<GameObject> gameObjects, List<Bullet> activeBullets) {
         if (Math.abs(Duration.between(LocalTime.now(), lastShootTime).getSeconds()) > Config.reload) {
             lastShootTime = LocalTime.now();
-            Bullet bullet = new Bullet(this.getX(), this.getY(), new ImageView(new Image(getClass().getResourceAsStream("/img/bullet.png"))));
+            Bullet bullet = new Bullet(this.getX(), this.getY(), new ImageView(new Image(getClass().getResourceAsStream("/img/bullet.png"))), this);
             bullet.getView().setRotate(this.getView().getRotate());
             addToViewGameObjectsToPane(bullet);
             activeBullets.add(bullet);

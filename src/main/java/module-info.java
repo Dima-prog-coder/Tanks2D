@@ -10,7 +10,10 @@ module com.ru.vsu.cs.dplatov.vvp.tanks2d.tanks2d {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.desktop;
 
-    opens com.ru.vsu.cs.dplatov.vvp.tanks2d.tanks2d to javafx.fxml;
-    exports com.ru.vsu.cs.dplatov.vvp.tanks2d.tanks2d;
+    opens com.ru.vsu.cs.dplatov.vvp.tanks2d.core to javafx.fxml;
+    exports com.ru.vsu.cs.dplatov.vvp.tanks2d.map;
+    exports com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
+    exports com.ru.vsu.cs.dplatov.vvp.tanks2d.core;
 }

@@ -13,11 +13,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class Controllers {
-    private final Set<KeyCode> activeKeys = new HashSet<>();
-    private final Set<Bullet> activeBullets = new HashSet<>();
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.removeViewGameObjectFromPane;
 
-    public void setupControls(Scene scene, List<GameObject> gameObjects, List<Bullet> activeBullets, Tank tank1, Tank tank2) {
+public class Controllers {
+    private final Set<KeyCode> activeKeys;
+    private final List<Bullet> activeBullets;
+    private final List<GameObject> gameObjects;
+
+    public Controllers(Set<KeyCode> activeKeys, List<Bullet> activeBullets, List<GameObject> gameObjects) {
+        this.activeKeys = activeKeys;
+        this.activeBullets = activeBullets;
+        this.gameObjects = gameObjects;
+    }
+
+
+    public void setupControls(Scene scene, Tank tank1, Tank tank2) {
         scene.setOnKeyPressed(e -> {
             activeKeys.add(e.getCode());
         });
@@ -68,8 +78,9 @@ public class Controllers {
         Iterator<Bullet> iterator = activeBullets.iterator();
         while (iterator.hasNext()) {
             Bullet bullet = iterator.next();
-            if (Math.abs(bullet.getX()) > 2000 || Math.abs(bullet.getY()) > 2000) {
+            if (Math.abs(bullet.getX()) > Config.projectileRange || Math.abs(bullet.getY()) > Config.projectileRange) {
                 iterator.remove();
+                removeViewGameObjectFromPane(bullet);
             }
             switch ((int) bullet.getView().getRotate()) {
                 case 0:

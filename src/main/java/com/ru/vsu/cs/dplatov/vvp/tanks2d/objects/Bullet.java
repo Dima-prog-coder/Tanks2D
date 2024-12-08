@@ -3,10 +3,13 @@ package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 import javafx.scene.image.ImageView;
 
 public class Bullet extends GameObject {
-    public Bullet(int x, int y, ImageView view) {
+    private Tank author;
+
+    public Bullet(int x, int y, ImageView view, Tank author) {
         super(x, y, view);
         this.setX(x);
         this.setY(y);
+        this.author = author;
     }
 
     @Override
