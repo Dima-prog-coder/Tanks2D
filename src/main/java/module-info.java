@@ -16,4 +16,6 @@ module com.ru.vsu.cs.dplatov.vvp.tanks2d.tanks2d {
     exports com.ru.vsu.cs.dplatov.vvp.tanks2d.map;
     exports com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
     exports com.ru.vsu.cs.dplatov.vvp.tanks2d.core;
+    exports com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes;
+    opens com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes to javafx.fxml;
 }

@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.List;
 
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.removeViewGameObjectFromPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.removeViewGameObjectFromPane;
 
 public class Bullet extends GameObject {
     private final Tank author;
@@ -30,12 +30,12 @@ public class Bullet extends GameObject {
         if (objectCollide instanceof Tank) {
             removeViewGameObjectFromPane(objectCollide);
             gameObjects.remove(objectCollide);
-            this.setX(Config.projectileRange);
-            this.setY(Config.projectileRange);
+            this.setX(Config.projectileRange + Config.bulletSpeed);
+            this.setY(Config.projectileRange + Config.bulletSpeed);
         }
         if (objectCollide instanceof Wall) {
-            this.setX(Config.projectileRange);
-            this.setY(Config.projectileRange);
+            this.setX(Config.projectileRange + Config.bulletSpeed);
+            this.setY(Config.projectileRange + Config.bulletSpeed);
         }
     }
 

@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.addToViewGameObjectsToPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewGameObjectsToPane;
 
 
 public class Tank extends GameObject {

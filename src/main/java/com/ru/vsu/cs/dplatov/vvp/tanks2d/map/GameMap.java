@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.addToViewDecorationsToPane;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.addToViewGameObjectsToPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewDecorationsToPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewGameObjectsToPane;
 
 public class GameMap {
     public static List<GameObject> createMap1() {
@@ -88,7 +88,7 @@ public class GameMap {
         return gameObjects;
     }
 
-    public static List<GameObject> createLargeMap() {
+    public static List<GameObject> createMap3() {
         int rows = 18; // Количество строк
         int cols = 25; // Количество колонок
 
@@ -131,6 +131,66 @@ public class GameMap {
         }
 
         addToViewGameObjectsToPane(gameObjects);
+        return gameObjects;
+    }
+
+    public static List<GameObject> createMap4() {
+        int rows = 20;
+        int cols = 30;
+
+        int cellSize = 32;
+
+        List<GameObject> gameObjects = new ArrayList<>();
+
+        Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
+        Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
+        gameObjects.add(new Tank(2 * cellSize, 2 * cellSize, new ImageView(imageTank1), gameObjects));
+        gameObjects.add(new Tank((cols - 3) * cellSize, (rows - 3) * cellSize, new ImageView(imageTank2), gameObjects));
+
+        Image imageWall = new Image(Game.class.getResourceAsStream(Config.wallImgPath));
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1) {
+                    int x = col * cellSize;
+                    int y = row * cellSize;
+                    gameObjects.add(new Wall(x, y, new ImageView(imageWall)));
+                }
+            }
+        }
+
+        for (int row = 5; row < rows - 5; row++) {
+            int x1 = 10 * cellSize;
+            int x2 = 20 * cellSize;
+            gameObjects.add(new Wall(x1, row * cellSize, new ImageView(imageWall)));
+            gameObjects.add(new Wall(x2, row * cellSize, new ImageView(imageWall)));
+        }
+
+        for (int col = 8; col < cols - 8; col++) {
+            int y1 = 5 * cellSize;
+            int y2 = 15 * cellSize;
+            gameObjects.add(new Wall(col * cellSize, y1, new ImageView(imageWall)));
+            gameObjects.add(new Wall(col * cellSize, y2, new ImageView(imageWall)));
+        }
+
+        // Adding lakes
+        List<ImageView> decorations = new ArrayList<>();
+        ImageView lake1 = makeDecoration(5 * cellSize, 5 * cellSize, "/img/lake.png");
+        ImageView lake2 = makeDecoration(18 * cellSize, 10 * cellSize, "/img/lake.png");
+        ImageView lake3 = makeDecoration(10 * cellSize, 18 * cellSize, "/img/lake.png");
+
+        decorations.add(lake1);
+        decorations.add(lake2);
+        decorations.add(lake3);
+
+        // Adding trees for more decoration
+        ImageView tree1 = makeDecoration(7 * cellSize, 3 * cellSize, "/img/tree.png");
+        ImageView tree2 = makeDecoration(22 * cellSize, 14 * cellSize, "/img/tree.png");
+        decorations.add(tree1);
+        decorations.add(tree2);
+
+        addToViewDecorationsToPane(decorations);
+        addToViewGameObjectsToPane(gameObjects);
+
         return gameObjects;
     }
 

@@ -3,6 +3,7 @@ package com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Bullet;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.SceneManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -11,11 +12,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.core.GameSceneManager.removeViewGameObjectFromPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.removeViewGameObjectFromPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.MainMenuScene.buildMainMenuScene;
 
 public class ControllersAndStates {
     private final Set<KeyCode> activeKeys;
     private final List<Bullet> activeBullets;
+    private AnimationTimer timer;
 
     public ControllersAndStates(Set<KeyCode> activeKeys, List<Bullet> activeBullets) {
         this.activeKeys = activeKeys;
@@ -31,14 +34,13 @@ public class ControllersAndStates {
             activeKeys.remove(e.getCode());
         });
 
-        AnimationTimer timer = new AnimationTimer() {
+        this.timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 updateTanksState(activeBullets, tank1, tank2);
                 updateBulletsState(activeBullets);
             }
         };
-
         timer.start();
     }
 
@@ -67,6 +69,11 @@ public class ControllersAndStates {
         }
         if (activeKeys.contains(KeyCode.ENTER)) {
             tank2.tankShoot(activeBullets);
+        }
+
+        if (activeKeys.contains(KeyCode.ESCAPE)) {
+            timer.stop();
+            SceneManager.switchToScene(buildMainMenuScene());
         }
     }
 

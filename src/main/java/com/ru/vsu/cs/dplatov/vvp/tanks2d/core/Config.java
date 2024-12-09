@@ -4,9 +4,9 @@ import javafx.scene.image.Image;
 
 public class Config {
     public static int speed = 2;
-    public static int bulletSpeed = 8;
-    public static int reload = 1;
-    public static int projectileRange = 1500;
+    public static int bulletSpeed = 10;
+    public static int reload = 3;
+    public static int projectileRange = 2000;
 
     public static String tank1ImgPath = "/img/tank1.png";
     public static String tank2ImgPath = "/img/tank2.png";
