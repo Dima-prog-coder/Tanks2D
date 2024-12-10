@@ -5,8 +5,12 @@ import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Wall;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +20,7 @@ import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewDecora
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewGameObjectsToPane;
 
 public class GameMap {
-    public static List<GameObject> createMap1() {
+    public static List<GameObject> createMap1(Pane pane) {
         int rows = 10;
         int cols = 10;
 
@@ -40,11 +44,10 @@ public class GameMap {
                 }
             }
         }
-        addToViewGameObjectsToPane(gameObjects);
         return gameObjects;
     }
 
-    public static List<GameObject> createMap2() {
+    public static List<GameObject> createMap2(Pane pane) {
         int rows = 18;
         int cols = 25;
 
@@ -84,11 +87,10 @@ public class GameMap {
 
         ImageView lake = makeDecoration(100, 100, "/img/lake.png");
         addToViewDecorationsToPane(Arrays.asList(lake));
-        addToViewGameObjectsToPane(gameObjects);
         return gameObjects;
     }
 
-    public static List<GameObject> createMap3() {
+    public static List<GameObject> createMap3(Pane pane) {
         int rows = 18; // Количество строк
         int cols = 25; // Количество колонок
 
@@ -129,19 +131,17 @@ public class GameMap {
                 gameObjects.add(wall);
             }
         }
-
-        addToViewGameObjectsToPane(gameObjects);
         return gameObjects;
     }
 
-    public static List<GameObject> createMap4() {
+    public static List<GameObject> createMap4(Pane pane) {
         int rows = 20;
         int cols = 30;
 
         int cellSize = 32;
 
         List<GameObject> gameObjects = new ArrayList<>();
-
+        pane.setBackground(Background.fill(Paint.valueOf("blue")));
         Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
         Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
         gameObjects.add(new Tank(2 * cellSize, 2 * cellSize, new ImageView(imageTank1), gameObjects));
@@ -189,7 +189,6 @@ public class GameMap {
         decorations.add(tree2);
 
         addToViewDecorationsToPane(decorations);
-        addToViewGameObjectsToPane(gameObjects);
 
         return gameObjects;
     }

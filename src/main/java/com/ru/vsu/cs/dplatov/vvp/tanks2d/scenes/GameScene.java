@@ -1,45 +1,44 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes;
 
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.ControllersAndStates;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.exceptions.MapNotFoundException;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.map.GameMap;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.updateStates.StatesUpdater;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
+
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers.setupControls;
 
 public class GameScene {
     private static Pane pane;
 
     public static Scene buildGameScene(int mapNumber) {
-        Pane root = new Pane();
-        GameScene.setPane(root);
-        List<GameObject> gameObjects = createGameObjects(mapNumber);
-        root.setBackground(Background.fill(Paint.valueOf("yellow")));
-        Scene scene = new Scene(root, 800, 600);
-        ControllersAndStates controllersAndStates = new ControllersAndStates(new HashSet<>(), new ArrayList<>());
-        controllersAndStates.setupControls(scene, gameObjects.stream().filter(obj -> obj instanceof Tank).map(obj -> (Tank) obj).toList().get(0), gameObjects.stream().filter(obj -> obj instanceof Tank).map(obj -> (Tank) obj).toList().get(1));
+        // make pane for objects on it
+        pane = new Pane();
+        // getting objects(with correct cords) to add it to pane
+        List<GameObject> gameObjects = createGameObjects(mapNumber, pane);
+        // adding objects to pane(by list)
+        addToViewGameObjectsToPane(gameObjects);
+        // creating scene
+        Scene scene = new Scene(pane, 800, 600);
+        // adding controls(Keys) listeners on scene
+        setupControls(scene);
+        // starting updating states for objects
+        StatesUpdater.startGameAnimation((Tank) gameObjects.stream().filter(e -> e instanceof Tank).toList().get(0), (Tank) gameObjects.stream().filter(e -> e instanceof Tank).toList().get(1));
         return scene;
     }
 
-
-    public static void setPane(Pane pane) {
-        GameScene.pane = pane;
-    }
-
-    public static List<GameObject> createGameObjects(int mapNumber) {
+    public static List<GameObject> createGameObjects(int mapNumber, Pane pane) {
         return switch (mapNumber) {
-            case 1 -> GameMap.createMap1();
-            case 2 -> GameMap.createMap2();
-            case 3 -> GameMap.createMap3();
-            case 4 -> GameMap.createMap4();
+            case 1 -> GameMap.createMap1(pane);
+            case 2 -> GameMap.createMap2(pane);
+            case 3 -> GameMap.createMap3(pane);
+            case 4 -> GameMap.createMap4(pane);
             default -> throw new MapNotFoundException("Карта не была найдена");
         };
     }

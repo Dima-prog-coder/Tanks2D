@@ -16,7 +16,7 @@ public class MainMenuScene {
         Button buttonPlay = new Button("Play");
         Button buttonSettings = new Button("Settings");
         buttonPlay.addEventHandler(ActionEvent.ACTION, e -> {
-            switchToScene(buildGameScene(2));
+            switchToScene(buildGameScene(4));
         });
         buttonSettings.addEventHandler(ActionEvent.ACTION, e -> {
             switchToScene(buildSettingsScene());

@@ -2,7 +2,7 @@ package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 
 import javafx.scene.image.ImageView;
 
-public class GameObject {
+abstract public class GameObject {
     private int x, y;
     private ImageView view;
 

@@ -1,50 +1,34 @@
-package com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers;
+package com.ru.vsu.cs.dplatov.vvp.tanks2d.updateStates;
 
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Bullet;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.SceneManager;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.removeViewGameObjectFromPane;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.MainMenuScene.buildMainMenuScene;
 
-public class ControllersAndStates {
-    private final Set<KeyCode> activeKeys;
-    private final List<Bullet> activeBullets;
-    private AnimationTimer timer;
+public class StatesUpdater {
+    private static AnimationTimer timer;
+    public static List<Bullet> activeBullets = new ArrayList<>();
 
-    public ControllersAndStates(Set<KeyCode> activeKeys, List<Bullet> activeBullets) {
-        this.activeKeys = activeKeys;
-        this.activeBullets = activeBullets;
-    }
-
-
-    public void setupControls(Scene scene, Tank tank1, Tank tank2) {
-        scene.setOnKeyPressed(e -> {
-            activeKeys.add(e.getCode());
-        });
-        scene.setOnKeyReleased(e -> {
-            activeKeys.remove(e.getCode());
-        });
-
-        this.timer = new AnimationTimer() {
+    public static void startGameAnimation(Tank tank1, Tank tank2) {
+        timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                updateTanksState(activeBullets, tank1, tank2);
+                updateTanksState(Controllers.getActiveKeys(), tank1, tank2);
                 updateBulletsState(activeBullets);
             }
         };
         timer.start();
     }
 
-    private void updateTanksState(List<Bullet> activeBullets, Tank tank1, Tank tank2) {
+    private static void updateTanksState(Set<KeyCode> activeKeys, Tank tank1, Tank tank2) {
         if (activeKeys.contains(KeyCode.W)) {
             tank1.moveTankUp();
         } else if (activeKeys.contains(KeyCode.A)) {
@@ -77,7 +61,7 @@ public class ControllersAndStates {
         }
     }
 
-    private void updateBulletsState(List<Bullet> activeBullets) {
+    private static void updateBulletsState(List<Bullet> activeBullets) {
         Iterator<Bullet> iterator = activeBullets.iterator();
         while (iterator.hasNext()) {
             Bullet bullet = iterator.next();
