@@ -134,7 +134,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.ru.vsu.cs.dplatov.vvp.tanks2d.tanks2d/com.ru.vsu.cs.dplatov.vvp.tanks2d.tanks2d.HelloApplication
+                                com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
@@ -142,6 +142,50 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.7.25</version>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/Tanks2D-0.1-all.exe</outfile>
+                            <jar>target/${project.artifactId}-${project.version}-all.jar</jar>
+                            <errTitle>${project.artifactId}</errTitle>
+                            <!--icon>favicon.ico</icon-->
+                            <classPath>
+                                <mainClass>${mainClass}</mainClass>
+                                <addDependencies>true</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <jre>
+                                <minVersion>${maven.compiler.target}</minVersion>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>${project.version}.0.0</fileVersion>
+                                <txtFileVersion>${project.name}</txtFileVersion>
+                                <fileDescription>${project.name}</fileDescription>
+                                <copyright>Copyright © 2018</copyright>
+                                <productVersion>${project.version}.0.0</productVersion>
+                                <txtProductVersion>${project.version}</txtProductVersion>
+                                <companyName>VSU CS</companyName>
+                                <productName>${project.name}</productName>
+                                <internalName>${project.name}</internalName>
+                                <originalFilename>${project.artifactId}.exe</originalFilename>
+                            </versionInfo>
                         </configuration>
                     </execution>
                 </executions>

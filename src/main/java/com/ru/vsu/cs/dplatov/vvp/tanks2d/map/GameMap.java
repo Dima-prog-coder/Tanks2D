@@ -5,7 +5,6 @@ import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Wall;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -17,9 +16,161 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewDecorationsToPane;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewGameObjectsToPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectHeight;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectWidth;
 
 public class GameMap {
+    public static List<GameObject> createBorders() {
+        Image wallImg = new Image(Game.class.getResourceAsStream(Config.wallImgPath));
+
+        // vertical section
+        int wallsCntVertical = (int) (2 / calculateObjectHeight(wallImg));
+        double betweenDistanceVertical = (2 - wallsCntVertical * calculateObjectHeight(wallImg)) / (wallsCntVertical - 1) + calculateObjectHeight(wallImg);
+        List<GameObject> wallList = new ArrayList<>();
+        double nextYCord = -1;
+        for (int i = 0; i < wallsCntVertical; i++) {
+            wallList.add(new Wall(-1, nextYCord, new ImageView(wallImg)));
+            wallList.add(new Wall(1 - calculateObjectWidth(wallImg), nextYCord, new ImageView(wallImg)));
+            nextYCord += betweenDistanceVertical;
+        }
+
+        // horizontal section
+        int wallsCntHorizontal = (int) (2 / calculateObjectWidth(wallImg));
+        double betweenDistanceHorizontal = (2 - wallsCntHorizontal * calculateObjectWidth(wallImg)) / (wallsCntHorizontal - 1) + calculateObjectWidth(wallImg);
+        System.out.println(wallsCntHorizontal);
+        System.out.println(betweenDistanceHorizontal);
+        double nextXCord = -1 + betweenDistanceHorizontal + betweenDistanceHorizontal - calculateObjectWidth(wallImg);
+        for (int i = 0; i < wallsCntHorizontal - 1; i++) {
+            wallList.add(new Wall(nextXCord, -1, new ImageView(wallImg)));
+            wallList.add(new Wall(nextXCord, 1 - calculateObjectHeight(wallImg), new ImageView(wallImg)));
+            nextXCord += betweenDistanceHorizontal;
+        }
+//        // horizontal section
+//        int wallsCntHorizontal = (int) (2 / calculateObjectWidth(wallImg));
+//        double betweenDistanceHorizontal = (2 - wallsCntHorizontal * calculateObjectWidth(wallImg)) / (wallsCntHorizontal - 1);
+//
+//        double nextXCord = -1 + calculateObjectWidth(wallImg) / 2;
+//        for (int i = 0; i < wallsCntHorizontal; i++) {
+//            wallList.add(new Wall(nextXCord, -1, new ImageView(wallImg))); // верхняя стена
+//            wallList.add(new Wall(nextXCord, 1 - calculateObjectHeight(wallImg), new ImageView(wallImg))); // нижняя стена
+//            nextXCord += betweenDistanceHorizontal + calculateObjectWidth(wallImg);
+//        }
+
+        return wallList;
+    }
+
+    public static List<GameObject> createMap5(Pane pane) {
+        List<GameObject> gameObjects = new ArrayList<>();
+        Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
+        Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
+        gameObjects.add(new Tank(0, 0, new ImageView(imageTank1)));
+        gameObjects.add(new Tank(0, 0.2, new ImageView(imageTank1)));
+        gameObjects.add(new Tank(-0.8, 0.7, new ImageView(imageTank2), Tank.TankStatus.BOT));
+        gameObjects.add(new Tank(0.5, -0.6, new ImageView(imageTank2), Tank.TankStatus.BOT));
+        gameObjects.add(new Tank(-0.3, 0.4, new ImageView(imageTank2), Tank.TankStatus.BOT));
+        gameObjects.add(new Tank(0.7, 0.1, new ImageView(imageTank2), Tank.TankStatus.BOT));
+        gameObjects.add(new Tank(-0.2, -0.8, new ImageView(imageTank2), Tank.TankStatus.BOT));
+        gameObjects.add(new Tank(0.6, -0.4, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(-0.7, 0.6, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(0.1, -0.3, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(-0.5, 0.2, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(0.4, -0.7, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(-0.9, -0.1, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(0.8, 0.5, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(-0.6, 0.9, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(0.2, -0.9, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(-0.1, 0.8, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(0.7, -0.2, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(-0.4, -0.7, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(0.3, 0.6, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(-0.2, -0.3, new ImageView(imageTank2), Tank.TankStatus.BOT));
+//        gameObjects.add(new Tank(0.1, 0.4, new ImageView(imageTank2), Tank.TankStatus.BOT));
+        List<GameObject> bordersList = createBorders();
+        gameObjects.addAll(bordersList);
+        return gameObjects;
+    }
+
+    public static List<GameObject> createMap7(Pane pane) {
+        // Список объектов карты
+        List<GameObject> gameObjects = new ArrayList<>();
+
+        // Получаем размеры сцены из Config
+        double sceneWidth = Config.scene.getWidth();
+        double sceneHeight = Config.scene.getHeight();
+
+        // Размер ячейки в пикселях
+        int cellSize = 32;
+
+        // Количество рядов и колонок
+        int rows = (int) Math.ceil(sceneHeight / cellSize);
+        int cols = (int) Math.ceil(sceneWidth / cellSize);
+
+        // Добавление танков
+        Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
+        Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
+        gameObjects.add(new Tank(-0.8, -0.5, new ImageView(imageTank1))); // Пример координат
+        gameObjects.add(new Tank(0, -0.5, new ImageView(imageTank2))); // Пример координат
+
+        // Циклы для создания стен
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                // Только границы (первые и последние ряды/колонки)
+                if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1) {
+                    // Позиция в пикселях
+                    double pixelX = col * cellSize;
+                    double pixelY = row * cellSize;
+
+                    // Переводим пиксели в координаты [-1;1]
+                    double relativeX = (pixelX / (sceneWidth / 2)) - 1;
+                    double relativeY = 1 - (pixelY / (sceneHeight / 2));
+
+                    // Создаем объект стены
+                    Image imageWall = new Image(Game.class.getResourceAsStream(Config.wallImgPath));
+                    ImageView wallImageView = new ImageView(imageWall);
+
+                    // Корректируем позицию объекта, если необходимо
+                    Wall wall = new Wall(relativeX, relativeY, wallImageView);
+                    gameObjects.add(wall);
+                }
+            }
+        }
+
+        return gameObjects;
+    }
+
+    public static List<GameObject> createMap6(Pane pane) {
+        int rows = 10;
+        int cols = 10;
+        int cellSize = 32;
+
+        List<GameObject> gameObjects = new ArrayList<>();
+        Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
+        Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
+        gameObjects.add(new Tank(0, 0.2, new ImageView(imageTank1)));
+        gameObjects.add(new Tank(0, 0, new ImageView(imageTank2)));
+
+        // Центр координат
+        double centerX = pane.getWidth() / 2;
+        double centerY = pane.getHeight() / 2;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1) {
+                    int x = col * cellSize;
+                    int y = row * cellSize;
+
+                    double relativeX = (x - centerX) / centerX;  // Координаты относительно центра X
+                    double relativeY = (y - centerY) / centerY;  // Координаты относительно центра Y
+
+                    Image imageWall = new Image(Game.class.getResourceAsStream(Config.wallImgPath));
+                    Wall wall = new Wall(relativeX, relativeY, new ImageView(imageWall));
+                    gameObjects.add(wall);
+                }
+            }
+        }
+        return gameObjects;
+    }
+
     public static List<GameObject> createMap1(Pane pane) {
         int rows = 10;
         int cols = 10;
@@ -29,8 +180,8 @@ public class GameMap {
         List<GameObject> gameObjects = new ArrayList<>();
         Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
         Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
-        gameObjects.add(new Tank(100, 100, new ImageView(imageTank1), gameObjects));
-        gameObjects.add(new Tank(100, 500, new ImageView(imageTank2), gameObjects));
+        gameObjects.add(new Tank(100, 100, new ImageView(imageTank1)));
+        gameObjects.add(new Tank(100, 500, new ImageView(imageTank2)));
 
 
         for (int row = 0; row < rows; row++) {
@@ -57,8 +208,8 @@ public class GameMap {
 
         Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
         Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
-        gameObjects.add(new Tank(2 * cellSize, 2 * cellSize, new ImageView(imageTank1), gameObjects));
-        gameObjects.add(new Tank((cols - 3) * cellSize, (rows - 3) * cellSize, new ImageView(imageTank2), gameObjects));
+        gameObjects.add(new Tank(2 * cellSize, 2 * cellSize, new ImageView(imageTank1)));
+        gameObjects.add(new Tank((cols - 3) * cellSize, (rows - 3) * cellSize, new ImageView(imageTank2)));
 
         Image imageWall = new Image(Game.class.getResourceAsStream(Config.wallImgPath));
         for (int row = 0; row < rows; row++) {
@@ -101,8 +252,8 @@ public class GameMap {
         // Добавляем танки
         Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
         Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
-        gameObjects.add(new Tank(100, 100, new ImageView(imageTank1), gameObjects));
-        gameObjects.add(new Tank(700, 500, new ImageView(imageTank2), gameObjects));
+        gameObjects.add(new Tank(100, 100, new ImageView(imageTank1)));
+        gameObjects.add(new Tank(700, 500, new ImageView(imageTank2)));
 
         // Загружаем изображение стены
         Image imageWall = new Image(Game.class.getResourceAsStream(Config.wallImgPath));
@@ -144,8 +295,8 @@ public class GameMap {
         pane.setBackground(Background.fill(Paint.valueOf("blue")));
         Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
         Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
-        gameObjects.add(new Tank(2 * cellSize, 2 * cellSize, new ImageView(imageTank1), gameObjects));
-        gameObjects.add(new Tank((cols - 3) * cellSize, (rows - 3) * cellSize, new ImageView(imageTank2), gameObjects));
+        gameObjects.add(new Tank(2 * cellSize, 2 * cellSize, new ImageView(imageTank1)));
+        gameObjects.add(new Tank((cols - 3) * cellSize, (rows - 3) * cellSize, new ImageView(imageTank2)));
 
         Image imageWall = new Image(Game.class.getResourceAsStream(Config.wallImgPath));
         for (int row = 0; row < rows; row++) {

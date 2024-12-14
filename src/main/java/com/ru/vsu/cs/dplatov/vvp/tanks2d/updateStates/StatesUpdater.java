@@ -1,5 +1,6 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.updateStates;
 
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.bots.BotManager;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Bullet;
@@ -15,17 +16,36 @@ import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.MainMenuScene.buildMainMe
 
 public class StatesUpdater {
     private static AnimationTimer timer;
-    public static List<Bullet> activeBullets = new ArrayList<>();
+    public static List<Bullet> activeBullets;
+    private static long lastUpdateBotsTime = 0;
 
-    public static void startGameAnimation(Tank tank1, Tank tank2) {
+    public static void startGameAnimation(List<Tank> userTanks, List<Tank> botTanks) {
+        activeBullets = new ArrayList<>();
+        BotManager.setBotsTankList(botTanks);
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                updateTanksState(Controllers.getActiveKeys(), tank1, tank2);
+                if (userTanks.size() == 2) {
+                    updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), userTanks.get(1));
+                } else {
+                    updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), null);
+                }
                 updateBulletsState(activeBullets);
+                if (now - lastUpdateBotsTime >= 40_000_000) {
+                    BotManager.updateBotsState(activeBullets);
+                    lastUpdateBotsTime = now;
+                }
             }
         };
         timer.start();
+    }
+
+    public static void stopGameAnimation() {
+        try {
+            timer.stop();
+        } catch (Exception e) {
+            return;
+        }
     }
 
     private static void updateTanksState(Set<KeyCode> activeKeys, Tank tank1, Tank tank2) {
@@ -42,21 +62,23 @@ public class StatesUpdater {
             tank1.tankShoot(activeBullets);
         }
 
-        if (activeKeys.contains(KeyCode.UP)) {
-            tank2.moveTankUp();
-        } else if (activeKeys.contains(KeyCode.LEFT)) {
-            tank2.moveTankLeft();
-        } else if (activeKeys.contains(KeyCode.RIGHT)) {
-            tank2.moveTankRight();
-        } else if (activeKeys.contains(KeyCode.DOWN)) {
-            tank2.moveTankDown();
-        }
-        if (activeKeys.contains(KeyCode.ENTER)) {
-            tank2.tankShoot(activeBullets);
+        if (tank2 != null) {
+            if (activeKeys.contains(KeyCode.UP)) {
+                tank2.moveTankUp();
+            } else if (activeKeys.contains(KeyCode.LEFT)) {
+                tank2.moveTankLeft();
+            } else if (activeKeys.contains(KeyCode.RIGHT)) {
+                tank2.moveTankRight();
+            } else if (activeKeys.contains(KeyCode.DOWN)) {
+                tank2.moveTankDown();
+            }
+            if (activeKeys.contains(KeyCode.ENTER)) {
+                tank2.tankShoot(activeBullets);
+            }
         }
 
         if (activeKeys.contains(KeyCode.ESCAPE)) {
-            timer.stop();
+            stopGameAnimation();
             SceneManager.switchToScene(buildMainMenuScene());
         }
     }
@@ -69,18 +91,18 @@ public class StatesUpdater {
                 iterator.remove();
                 removeViewGameObjectFromPane(bullet);
             }
-            switch ((int) bullet.getView().getRotate()) {
-                case 0:
-                    bullet.setY(bullet.getY() - Config.bulletSpeed);
+            switch (bullet.getOrientation()) {
+                case Bullet.Orientation.TOP:
+                    bullet.setY(bullet.getY() - Config.bulletVerticalSpeed);
                     break;
-                case 180:
-                    bullet.setY(bullet.getY() + Config.bulletSpeed);
+                case Bullet.Orientation.BOTTOM:
+                    bullet.setY(bullet.getY() + Config.bulletVerticalSpeed);
                     break;
-                case -90:
-                    bullet.setX(bullet.getX() - Config.bulletSpeed);
+                case Bullet.Orientation.LEFT:
+                    bullet.setX(bullet.getX() - Config.bulletHorizontalSpeed);
                     break;
-                case 90:
-                    bullet.setX(bullet.getX() + Config.bulletSpeed);
+                case Bullet.Orientation.RIGHT:
+                    bullet.setX(bullet.getX() + Config.bulletHorizontalSpeed);
                     break;
             }
         }

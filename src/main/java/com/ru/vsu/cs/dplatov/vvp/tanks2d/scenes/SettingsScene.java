@@ -13,10 +13,10 @@ import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.MainMenuScene.buildMainMe
 public class SettingsScene {
     public static Scene buildSettingsScene() {
         Label label1 = new Label("Скорость танков");
-        TextField textField = new TextField(String.valueOf(Config.speed));
+        TextField textField = new TextField(String.valueOf(Config.horizontalSpeed));
         label1.setLabelFor(textField);
         VBox settingsVBox = new VBox(label1, textField);
-        Scene scene = new Scene(settingsVBox, 800, 600);
+        Scene scene = new Scene(settingsVBox);
         scene.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ESCAPE)) {
                 SceneManager.switchToScene(buildMainMenuScene());

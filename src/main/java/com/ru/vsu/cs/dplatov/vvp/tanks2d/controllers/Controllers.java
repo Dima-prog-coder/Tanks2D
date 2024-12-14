@@ -11,7 +11,7 @@ import java.util.Set;
  * Sets and parse keyboard keys to give it for updating active objects states. If one player, this class controls only his controls
  */
 public class Controllers {
-    private static final Set<KeyCode> activeKeys = new HashSet<>();
+    private static Set<KeyCode> activeKeys;
 
     public static Set<KeyCode> getActiveKeys() {
         return activeKeys;
@@ -22,6 +22,7 @@ public class Controllers {
      * @param scene used to add KeyPressed listeners
      */
     public static void setupControls(Scene scene) {
+        activeKeys = new HashSet<>();
         scene.setOnKeyPressed(e -> {
             activeKeys.add(e.getCode());
         });

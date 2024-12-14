@@ -1,70 +1,105 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.utils.MathUtils;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.List;
 
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.collisions.CollisionManager.*;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.removeViewGameObjectFromPane;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectHeight;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectWidth;
 
 public class Bullet extends GameObject {
     private final Tank author;
-    private final List<GameObject> gameObjects;
+    private Orientation orientation;
 
-    public Bullet(int x, int y, ImageView view, Tank author, List<GameObject> gameObjects) {
+    public enum Orientation {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT
+    }
+
+    private void orientationReplace() {
+        switch (orientation) {
+            case LEFT -> orientation = Orientation.RIGHT;
+            case TOP -> orientation = Orientation.BOTTOM;
+        }
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public Bullet(double x, double y, ImageView view, Tank author, Orientation orientation) {
         super(x, y, view);
-        this.gameObjects = gameObjects;
         this.author = author;
-        this.setX(x);
-        this.setY(y);
+        this.orientation = orientation;
+        if (author.getView().getRotate() == 180 || author.getView().getRotate() == 90) {
+            getView().setRotate(180);
+            orientationReplace();
+        }
+        TransformationMatrix.transformToImageViewCordsAndSetIt(getView(), getX(), getY());
     }
 
+
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
         super.setY(y);
-        getView().setY(this.getY());
-        GameObject objectCollide = isCollide(this.getX(), this.getY());
-        if (objectCollide == null) {
+        TransformationMatrix.transformToImageViewCordsAndSetIt(getView(), getX(), getY());
+        List<GameObject> collideObjects = findCollideObjects(this);
+        if (collideObjects.isEmpty()) {
             return;
         }
-        if (objectCollide instanceof Tank) {
-            removeViewGameObjectFromPane(objectCollide);
-            gameObjects.remove(objectCollide);
-            this.setX(Config.projectileRange + Config.bulletSpeed);
-            this.setY(Config.projectileRange + Config.bulletSpeed);
-        }
-        if (objectCollide instanceof Wall) {
-            this.setX(Config.projectileRange + Config.bulletSpeed);
-            this.setY(Config.projectileRange + Config.bulletSpeed);
-        }
+        onHit(collideObjects);
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
         super.setX(x);
-        getView().setX(this.getX());
-        GameObject objectCollide = isCollide(this.getX(), this.getY());
-        if (objectCollide == null) {
+        TransformationMatrix.transformToImageViewCordsAndSetIt(getView(), getX(), getY());
+        List<GameObject> collideObjects = findCollideObjects(this);
+        if (collideObjects.isEmpty()) {
             return;
         }
-        if (objectCollide instanceof Tank) {
-            removeViewGameObjectFromPane(objectCollide);
-            gameObjects.remove(objectCollide);
-            this.setX(Config.projectileRange);
-            this.setY(Config.projectileRange);
-        }
-        if (objectCollide instanceof Wall) {
-            this.setX(Config.projectileRange);
-            this.setY(Config.projectileRange);
-        }
+        onHit(collideObjects);
     }
 
-    private GameObject isCollide(int x, int y) {
-        for (GameObject gameObject : gameObjects) {
-            if (x < gameObject.getX() + gameObject.getView().getImage().getWidth() && x + this.getView().getImage().getWidth() > gameObject.getX() && y < gameObject.getY() + gameObject.getView().getImage().getHeight() && y + this.getView().getImage().getHeight() > gameObject.getY() && this.author != gameObject) {
-                return gameObject;
+    public void onHit(List<GameObject> collideObjects) {
+        for (GameObject collideObject : collideObjects) {
+            if (MathUtils.calculateDistanceBetweenCords(TransformationMatrix.calculateCenterX(this), TransformationMatrix.calculateCenterY(this), TransformationMatrix.calculateCenterX(collideObject), TransformationMatrix.calculateCenterY(collideObject)) > TransformationMatrix.calculateObjectWidth(collideObject)) {
+                return;
+            }
+            if (collideObject instanceof Tank && this.author != collideObject) { // && this.author.getTankStatus() != ((Tank) collideObject).getTankStatus()
+                removeViewGameObjectFromPane(collideObject);
+                this.setX(Config.projectileRange + Config.projectileRange);
+                this.setY(Config.projectileRange + Config.projectileRange);
+            } else if (collideObject instanceof Wall) {
+                this.setX(Config.projectileRange + Config.projectileRange);
+                this.setY(Config.projectileRange + Config.projectileRange);
             }
         }
-        return null;
+    }
+
+    public static Bullet createNewBulletByAuthor(Tank tankAuthor) {
+        Image img = tankAuthor.getView().getRotate() == 0 || tankAuthor.getView().getRotate() == 180 ? new Image(Game.class.getResourceAsStream(Config.bulletVerticalImgPath)) : new Image(Game.class.getResourceAsStream(Config.bulletHorizontalImgPath));
+        Bullet.Orientation orientation = tankAuthor.getView().getRotate() == 0 || tankAuthor.getView().getRotate() == 180 ? Bullet.Orientation.TOP : Bullet.Orientation.LEFT;
+        Bullet bullet;
+        if (orientation == Orientation.TOP) {
+            bullet = new Bullet(tankAuthor.getX() + calculateObjectWidth(tankAuthor) / 2 - calculateObjectWidth(new Image(Game.class.getResourceAsStream(Config.bulletVerticalImgPath))) / 2, tankAuthor.getY() + calculateObjectHeight(tankAuthor) / 2 - calculateObjectHeight(new Image(Game.class.getResourceAsStream(Config.bulletVerticalImgPath))) / 2, new ImageView(img), tankAuthor, orientation);
+        } else {
+            bullet = new Bullet(tankAuthor.getX() + calculateObjectWidth(tankAuthor) / 2 - calculateObjectWidth(new Image(Game.class.getResourceAsStream(Config.bulletHorizontalImgPath))) / 2, tankAuthor.getY() + calculateObjectHeight(tankAuthor) / 2 - calculateObjectHeight(new Image(Game.class.getResourceAsStream(Config.bulletHorizontalImgPath))) / 2, new ImageView(img), tankAuthor, orientation);
+        }
+        return bullet;
+    }
+
+    @Override
+    public String toString() {
+        return "bullet" + "___" + this.author + "___" + this.getView().getX() + "___" + this.getView().getY();
     }
 }

@@ -14,7 +14,9 @@ import java.io.IOException;
 public class Game extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        Config.stage = stage;
         SceneManager.setStage(stage);
+        stage.setFullScreen(true);
         SceneManager.switchToScene(MainMenuScene.buildMainMenuScene());
     }
 

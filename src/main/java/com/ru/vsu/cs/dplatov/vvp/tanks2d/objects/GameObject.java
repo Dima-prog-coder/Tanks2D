@@ -3,28 +3,28 @@ package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 import javafx.scene.image.ImageView;
 
 abstract public class GameObject {
-    private int x, y;
+    private double x, y;
     private ImageView view;
 
-    public GameObject(int x, int y, ImageView view) {
+    public GameObject(double x, double y, ImageView view) {
         this.x = x;
         this.y = y;
         this.view = view;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
