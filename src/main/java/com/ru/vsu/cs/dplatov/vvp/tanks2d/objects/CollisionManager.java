@@ -1,14 +1,13 @@
-package com.ru.vsu.cs.dplatov.vvp.tanks2d.collisions;
+package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import javafx.scene.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectHeight;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectWidth;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectHeight;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectWidth;
 
 public class CollisionManager {
     private static List<GameObject> gameObjects;

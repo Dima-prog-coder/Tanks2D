@@ -1,6 +1,6 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix;
 import javafx.scene.image.ImageView;
 
 public class Wall extends GameObject {

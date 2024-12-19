@@ -2,6 +2,7 @@ package com.ru.vsu.cs.dplatov.vvp.tanks2d.map;
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.BotTank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Wall;
@@ -16,8 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.addToViewDecorationsToPane;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectHeight;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectWidth;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectHeight;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectWidth;
 
 public class GameMap {
     public static List<GameObject> createBorders() {
@@ -65,26 +66,26 @@ public class GameMap {
         Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
         gameObjects.add(new Tank(0, 0, new ImageView(imageTank1)));
         gameObjects.add(new Tank(0, 0.2, new ImageView(imageTank1)));
-        gameObjects.add(new Tank(-0.8, 0.7, new ImageView(imageTank2), Tank.TankStatus.BOT));
-        gameObjects.add(new Tank(0.5, -0.6, new ImageView(imageTank2), Tank.TankStatus.BOT));
-        gameObjects.add(new Tank(-0.3, 0.4, new ImageView(imageTank2), Tank.TankStatus.BOT));
-        gameObjects.add(new Tank(0.7, 0.1, new ImageView(imageTank2), Tank.TankStatus.BOT));
-        gameObjects.add(new Tank(-0.2, -0.8, new ImageView(imageTank2), Tank.TankStatus.BOT));
-        gameObjects.add(new Tank(0.6, -0.4, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(-0.7, 0.6, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(0.1, -0.3, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(-0.5, 0.2, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(0.4, -0.7, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(-0.9, -0.1, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(0.8, 0.5, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(-0.6, 0.9, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(0.2, -0.9, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(-0.1, 0.8, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(0.7, -0.2, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(-0.4, -0.7, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(0.3, 0.6, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(-0.2, -0.3, new ImageView(imageTank2), Tank.TankStatus.BOT));
-//        gameObjects.add(new Tank(0.1, 0.4, new ImageView(imageTank2), Tank.TankStatus.BOT));
+        gameObjects.add(new BotTank(-0.8, 0.7, new ImageView(imageTank2)));
+        gameObjects.add(new BotTank(0.5, -0.6, new ImageView(imageTank2)));
+        gameObjects.add(new BotTank(-0.3, 0.4, new ImageView(imageTank2)));
+        gameObjects.add(new BotTank(0.7, 0.1, new ImageView(imageTank2)));
+        gameObjects.add(new BotTank(-0.2, -0.8, new ImageView(imageTank2)));
+        gameObjects.add(new BotTank(0.6, -0.4, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(-0.7, 0.6, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(0.1, -0.3, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(-0.5, 0.2, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(0.4, -0.7, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(-0.9, -0.1, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(0.8, 0.5, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(-0.6, 0.9, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(0.2, -0.9, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(-0.1, 0.8, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(0.7, -0.2, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(-0.4, -0.7, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(0.3, 0.6, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(-0.2, -0.3, new ImageView(imageTank2)));
+//        gameObjects.add(new Tank(0.1, 0.4, new ImageView(imageTank2)));
         List<GameObject> bordersList = createBorders();
         gameObjects.addAll(bordersList);
         return gameObjects;

@@ -16,6 +16,5 @@ public class SceneManager {
         stage.setResizable(false);
         stage.show();
         stage.setScene(scene);
-        stage.setFullScreen(true);
     }
 }

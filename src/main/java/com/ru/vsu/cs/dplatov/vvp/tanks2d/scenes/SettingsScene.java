@@ -16,7 +16,7 @@ public class SettingsScene {
         TextField textField = new TextField(String.valueOf(Config.horizontalSpeed));
         label1.setLabelFor(textField);
         VBox settingsVBox = new VBox(label1, textField);
-        Scene scene = new Scene(settingsVBox);
+        Scene scene = new Scene(settingsVBox, Config.userScreenWidth, Config.userScreenHeight);
         scene.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ESCAPE)) {
                 SceneManager.switchToScene(buildMainMenuScene());

@@ -1,4 +1,4 @@
-package com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix;
+package com.ru.vsu.cs.dplatov.vvp.tanks2d.map;
 
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;

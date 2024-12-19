@@ -6,9 +6,9 @@ import javafx.stage.Stage;
 public class Config {
     public static Stage stage;
     public static Scene scene;
-    public static double horizontalSpeed = 0.006;
+    public static double horizontalSpeed = 0.009;
     public static double verticalSpeed;
-    public static double bulletHorizontalSpeed = 0.015;
+    public static double bulletHorizontalSpeed = 0.02;
     public static double bulletVerticalSpeed;
     public static int reload = 1;
     public static double projectileRange = 1500;
@@ -20,10 +20,13 @@ public class Config {
     public static String wallImgPath = "/img/wall.png";
 
     public static int userScreenWidth = 1200;
-    public static int UserScreenHeight = 1000;
+    public static int userScreenHeight = 1000;
+
+    public static int botMovementCntOneWayMax = 70;
+    public static long botRefreshingSpeed = 20_000_000;
 
     public static void setUserScreenHeight(int userScreenHeight) {
-        Config.UserScreenHeight = userScreenHeight;
+        Config.userScreenHeight = userScreenHeight;
     }
 
     public static void setUserScreenWidth(int userScreenWidth) {

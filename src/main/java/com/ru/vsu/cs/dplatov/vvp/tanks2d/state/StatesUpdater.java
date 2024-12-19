@@ -1,4 +1,4 @@
-package com.ru.vsu.cs.dplatov.vvp.tanks2d.updateStates;
+package com.ru.vsu.cs.dplatov.vvp.tanks2d.state;
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.bots.BotManager;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers;
@@ -23,17 +23,23 @@ public class StatesUpdater {
         activeBullets = new ArrayList<>();
         BotManager.setBotsTankList(botTanks);
         timer = new AnimationTimer() {
+            private static final long TARGET_FPS = 60;
+            private long lastUpdate = 0;
+
             @Override
             public void handle(long now) {
-                if (userTanks.size() == 2) {
-                    updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), userTanks.get(1));
-                } else {
-                    updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), null);
-                }
-                updateBulletsState(activeBullets);
-                if (now - lastUpdateBotsTime >= 40_000_000) {
-                    BotManager.updateBotsState(activeBullets);
-                    lastUpdateBotsTime = now;
+                if (now - lastUpdate >= 1_000_000_000 / TARGET_FPS) {
+                    lastUpdate = now;
+                    if (userTanks.size() == 2) {
+                        updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), userTanks.get(1));
+                    } else {
+                        updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), null);
+                    }
+                    updateBulletsState(activeBullets);
+                    if (now - lastUpdateBotsTime >= Config.botRefreshingSpeed) {
+                        BotManager.updateBotsState(activeBullets);
+                        lastUpdateBotsTime = now;
+                    }
                 }
             }
         };

@@ -2,17 +2,17 @@ package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.utils.MathUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.List;
 
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.collisions.CollisionManager.*;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.CollisionManager.*;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.removeViewGameObjectFromPane;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectHeight;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectWidth;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectHeight;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectWidth;
 
 public class Bullet extends GameObject {
     private final Tank author;
@@ -77,6 +77,9 @@ public class Bullet extends GameObject {
             }
             if (collideObject instanceof Tank && this.author != collideObject) { // && this.author.getTankStatus() != ((Tank) collideObject).getTankStatus()
                 removeViewGameObjectFromPane(collideObject);
+                ((Tank) collideObject).setALive(false);
+                collideObject.setX(Config.projectileRange + Config.projectileRange);
+                collideObject.setY(Config.projectileRange + Config.projectileRange);
                 this.setX(Config.projectileRange + Config.projectileRange);
                 this.setY(Config.projectileRange + Config.projectileRange);
             } else if (collideObject instanceof Wall) {

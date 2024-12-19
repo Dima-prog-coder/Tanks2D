@@ -1,14 +1,14 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes;
 
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.bots.BotManager;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.collisions.CollisionManager;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.BotTank;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.CollisionManager;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.exceptions.MapNotFoundException;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.map.GameMap;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.updateStates.StatesUpdater;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.state.StatesUpdater;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -31,7 +31,7 @@ public class GameScene {
         if (Config.stage.isFullScreen()) {
             scene = new Scene(pane, Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
         } else {
-            scene = new Scene(pane, Config.userScreenWidth, Config.UserScreenHeight);
+            scene = new Scene(pane, Config.userScreenWidth, Config.userScreenHeight);
         }
         // setting gameScene in Config + calculation vertical speed
         Config.setScene(scene);
@@ -50,7 +50,7 @@ public class GameScene {
         // adding controls(Keys) listeners on scene
         setupControls(scene);
         // starting updating states for objects
-        StatesUpdater.startGameAnimation(gameObjects.stream().filter(e -> e instanceof Tank && ((Tank) e).getTankStatus() == Tank.TankStatus.USER).map(e -> (Tank) e).collect(Collectors.toList()), gameObjects.stream().filter(e -> e instanceof Tank && ((Tank) e).getTankStatus() == Tank.TankStatus.BOT).map(e -> (Tank) e).collect(Collectors.toList()));
+        StatesUpdater.startGameAnimation(gameObjects.stream().filter(e -> e instanceof Tank && !(e instanceof BotTank)).map(e -> (Tank) e).collect(Collectors.toList()), gameObjects.stream().filter(e -> e instanceof BotTank).map(e -> (Tank) e).collect(Collectors.toList()));
         return scene;
     }
 

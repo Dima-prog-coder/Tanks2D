@@ -1,46 +1,39 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.bots;
 
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.BotTank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Bullet;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.Timer;
 
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectHeight;
-import static com.ru.vsu.cs.dplatov.vvp.tanks2d.transformationMatrix.TransformationMatrix.calculateObjectWidth;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectHeight;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectWidth;
 
 public class BotManager {
     private static List<Tank> botsTankList;
-    private static int cnt = 0;
-    private static int action;
+    private static final Random random = new Random();
 
     public static void updateBotsState(List<Bullet> bulletList) {
-        Random random = new Random();
-        for (Tank botTank : botsTankList) {
-            botTank.tankShoot(bulletList);
-            if (cnt == 0) {
-                action = random.nextInt(4);
-                cnt = 50;
-            } else {
-                cnt -= 1;
-            }
-            switch (action) {
-                case 0:
-                    botTank.moveTankUp();
-                    break;
-                case 1:
-                    botTank.moveTankDown();
-                    break;
-                case 2:
-                    botTank.moveTankLeft();
-                    break;
-                case 3:
-                    botTank.moveTankRight();
-                    break;
-            }
-        }
+        botsTankList.stream()
+                .map(tank -> (BotTank) tank)
+                .forEach(botTank -> {
+                    botTank.tankShoot(bulletList);
+                    if (botTank.getCntOnThisWay() == 0) {
+                        botTank.setCurrentWay(random.nextInt(4));
+                        botTank.setCntOnThisWay(random.nextInt(Config.botMovementCntOneWayMax));
+                    }
+                    botTank.setCntOnThisWay(botTank.getCntOnThisWay() - 1);
+                    switch (botTank.getCurrentWay()) {
+                        case 0 -> botTank.moveTankUp();
+                        case 1 -> botTank.moveTankDown();
+                        case 2 -> botTank.moveTankLeft();
+                        case 3 -> botTank.moveTankRight();
+                    }
+                });
     }
 
     public static void setBotsTankList(List<Tank> botsTankList) {
@@ -50,4 +43,5 @@ public class BotManager {
     public static List<Tank> getBotsTankList() {
         return botsTankList;
     }
+
 }

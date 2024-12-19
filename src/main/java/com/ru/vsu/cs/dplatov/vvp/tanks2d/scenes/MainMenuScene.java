@@ -27,7 +27,7 @@ public class MainMenuScene {
         if (Config.stage.isFullScreen()) {
             return new Scene(toolBar, Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
         } else {
-            return new Scene(toolBar, Config.scene.getWidth(), Config.scene.getHeight());
+            return new Scene(toolBar, Config.userScreenWidth, Config.userScreenHeight);
         }
     }
 }
