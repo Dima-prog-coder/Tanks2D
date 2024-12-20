@@ -67,7 +67,7 @@ public class Tank extends GameObject {
     }
 
     public void tankShoot(List<Bullet> activeBullets) {
-        if (Math.abs(Duration.between(LocalTime.now(), lastShootTime).getSeconds()) > Config.reload) {
+        if (Math.abs(Duration.between(LocalTime.now(), lastShootTime).getSeconds()) > Config.reload && isALive) {
             lastShootTime = LocalTime.now();
             Bullet bullet = createNewBulletByAuthor(this);
             addToViewGameObjectsToPane(bullet);

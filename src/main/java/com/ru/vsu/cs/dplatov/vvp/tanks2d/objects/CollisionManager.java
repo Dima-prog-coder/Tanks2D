@@ -24,6 +24,10 @@ public class CollisionManager {
         CollisionManager.gameObjects = gameObjects;
     }
 
+    public static List<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
     public static void setScene(Scene scene) {
         CollisionManager.scene = scene;
     }

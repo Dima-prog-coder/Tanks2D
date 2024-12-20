@@ -38,8 +38,6 @@ public class GameMap {
         // horizontal section
         int wallsCntHorizontal = (int) (2 / calculateObjectWidth(wallImg));
         double betweenDistanceHorizontal = (2 - wallsCntHorizontal * calculateObjectWidth(wallImg)) / (wallsCntHorizontal - 1) + calculateObjectWidth(wallImg);
-        System.out.println(wallsCntHorizontal);
-        System.out.println(betweenDistanceHorizontal);
         double nextXCord = -1 + betweenDistanceHorizontal + betweenDistanceHorizontal - calculateObjectWidth(wallImg);
         for (int i = 0; i < wallsCntHorizontal - 1; i++) {
             wallList.add(new Wall(nextXCord, -1, new ImageView(wallImg)));
