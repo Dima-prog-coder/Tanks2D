@@ -1,13 +1,11 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes;
 
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.BotTank;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.CollisionManager;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.*;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.exceptions.MapNotFoundException;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.map.GameMap;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
-import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.state.GameState;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.state.StatesUpdater;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -16,14 +14,13 @@ import javafx.stage.Screen;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers.setupControls;
 
 public class GameScene {
     private static Pane pane;
 
-    public static Scene buildGameScene(int mapNumber) {
+    public static Scene buildGameScene(int mapNumber, int playerCnt, GameState.GameType gameType) {
         // make pane for objects on it
         pane = new Pane();
         // creating scene
@@ -41,16 +38,16 @@ public class GameScene {
         CollisionManager.setScene(scene);
         // getting objects(with correct cords) to add it to pane
         List<GameObject> gameObjects = createGameObjects(mapNumber);
-        // adding objects to CollisionManager
-        CollisionManager.setGameObjects(gameObjects);
-        // giving bot management to BotManager
-//        BotManager.setBotsTankList(gameObjects.stream().filter(e -> e instanceof Tank && ));
+        // gameType set
+        GameState.setGameType(gameType);
+        // adding gameObjects to storage
+        GameObjectsStorage.setGameObjects(gameObjects);
         // adding objects to pane(by list)
         addToViewGameObjectsToPane(gameObjects);
         // adding controls(Keys) listeners on scene
         setupControls(scene);
         // starting updating states for objects
-        StatesUpdater.startGameAnimation(gameObjects.stream().filter(e -> e instanceof Tank && !(e instanceof BotTank)).map(e -> (Tank) e).collect(Collectors.toList()), gameObjects.stream().filter(e -> e instanceof BotTank).map(e -> (Tank) e).collect(Collectors.toList()));
+        StatesUpdater.startGameAnimation();
         return scene;
     }
 

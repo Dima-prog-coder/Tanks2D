@@ -10,7 +10,6 @@ import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calcula
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectWidth;
 
 public class CollisionManager {
-    private static List<GameObject> gameObjects;
     private static Scene scene;
 
     public enum Collision {
@@ -20,13 +19,6 @@ public class CollisionManager {
         BOTTOM
     }
 
-    public static void setGameObjects(List<GameObject> gameObjects) {
-        CollisionManager.gameObjects = gameObjects;
-    }
-
-    public static List<GameObject> getGameObjects() {
-        return gameObjects;
-    }
 
     public static void setScene(Scene scene) {
         CollisionManager.scene = scene;
@@ -34,7 +26,7 @@ public class CollisionManager {
 
     public static List<GameObject> findCollideObjects(GameObject currentGameObject) {
         List<GameObject> collideObjects = new ArrayList<>();
-        for (GameObject gameObject : gameObjects) {
+        for (GameObject gameObject : GameObjectsStorage.getGameObjects()) {
             if (currentGameObject.getX() < gameObject.getX() + calculateObjectWidth(gameObject) && currentGameObject.getX() + calculateObjectWidth(currentGameObject) > gameObject.getX() && currentGameObject.getY() < gameObject.getY() + calculateObjectHeight(gameObject) && currentGameObject.getY() + calculateObjectHeight(currentGameObject) > gameObject.getY() && currentGameObject != gameObject) {
                 collideObjects.add(gameObject);
             }

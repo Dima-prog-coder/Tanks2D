@@ -15,6 +15,7 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Config.stage = stage;
+        stage.setFullScreen(true);
         SceneManager.setStage(stage);
         SceneManager.switchToScene(MainMenuScene.buildMainMenuScene());
     }

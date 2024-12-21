@@ -15,6 +15,7 @@ public class SceneManager {
     public static void switchToScene(Scene scene) {
         stage.setResizable(false);
         stage.show();
+        stage.setFullScreen(true);
         stage.setScene(scene);
     }
 }

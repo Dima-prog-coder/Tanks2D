@@ -80,7 +80,7 @@ public class Bullet extends GameObject {
                 ((Tank) collideObject).setALive(false);
                 collideObject.setX(Config.projectileRange + Config.projectileRange);
                 collideObject.setY(Config.projectileRange + Config.projectileRange);
-                CollisionManager.getGameObjects().remove(collideObject);
+                GameObjectsStorage.removeGameObject(collideObject);
                 this.setX(Config.projectileRange + Config.projectileRange);
                 this.setY(Config.projectileRange + Config.projectileRange);
             } else if (collideObject instanceof Wall) {

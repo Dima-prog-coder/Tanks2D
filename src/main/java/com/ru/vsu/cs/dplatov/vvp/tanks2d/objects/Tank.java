@@ -66,12 +66,12 @@ public class Tank extends GameObject {
         TransformationMatrix.transformToImageViewCordsAndSetIt(getView(), getX(), getY());
     }
 
-    public void tankShoot(List<Bullet> activeBullets) {
+    public void tankShoot() {
         if (Math.abs(Duration.between(LocalTime.now(), lastShootTime).getSeconds()) > Config.reload && isALive) {
             lastShootTime = LocalTime.now();
             Bullet bullet = createNewBulletByAuthor(this);
             addToViewGameObjectsToPane(bullet);
-            activeBullets.add(bullet);
+            GameObjectsStorage.addBullet(bullet);
         }
     }
 

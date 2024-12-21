@@ -4,6 +4,7 @@ import com.ru.vsu.cs.dplatov.vvp.tanks2d.bots.BotManager;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Bullet;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObjectsStorage;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.SceneManager;
 import javafx.animation.AnimationTimer;
@@ -11,17 +12,17 @@ import javafx.scene.input.KeyCode;
 
 import java.util.*;
 
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameFinishScenes.buildLoseScene;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.removeViewGameObjectFromPane;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.MainMenuScene.buildMainMenuScene;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameFinishScenes.buildWinScene;
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.state.GameState.checkGameStatus;
 
 public class StatesUpdater {
     private static AnimationTimer timer;
-    public static List<Bullet> activeBullets;
     private static long lastUpdateBotsTime = 0;
 
-    public static void startGameAnimation(List<Tank> userTanks, List<Tank> botTanks) {
-        activeBullets = new ArrayList<>();
-        BotManager.setBotsTankList(botTanks);
+    public static void startGameAnimation() {
         timer = new AnimationTimer() {
             private static final long TARGET_FPS = 60;
             private long lastUpdate = 0;
@@ -30,14 +31,25 @@ public class StatesUpdater {
             public void handle(long now) {
                 if (now - lastUpdate >= 1_000_000_000 / TARGET_FPS) {
                     lastUpdate = now;
-                    if (userTanks.size() == 2) {
-                        updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), userTanks.get(1));
-                    } else {
-                        updateTanksState(Controllers.getActiveKeys(), userTanks.get(0), null);
+                    GameState.GameStatus gameStatus = checkGameStatus();
+                    if (gameStatus != GameState.GameStatus.GAME) {  
+                        switch (gameStatus) {
+                            case WIN -> {
+                                timer.stop();
+                                SceneManager.switchToScene(buildWinScene());
+                            }
+                            case LOSE -> {
+                                timer.stop();
+                                SceneManager.switchToScene(buildLoseScene());
+                            }
+                        }
                     }
-                    updateBulletsState(activeBullets);
+                    updateTanksState(Controllers.getActiveKeys(), GameObjectsStorage.getUserTankList().get(0), GameObjectsStorage.getUserTankList().get(1));
+
+
+                    updateBulletsState();
                     if (now - lastUpdateBotsTime >= Config.botRefreshingSpeed) {
-                        BotManager.updateBotsState(activeBullets);
+                        BotManager.updateBotsState();
                         lastUpdateBotsTime = now;
                     }
                 }
@@ -55,17 +67,19 @@ public class StatesUpdater {
     }
 
     private static void updateTanksState(Set<KeyCode> activeKeys, Tank tank1, Tank tank2) {
-        if (activeKeys.contains(KeyCode.W)) {
-            tank1.moveTankUp();
-        } else if (activeKeys.contains(KeyCode.A)) {
-            tank1.moveTankLeft();
-        } else if (activeKeys.contains(KeyCode.D)) {
-            tank1.moveTankRight();
-        } else if (activeKeys.contains(KeyCode.S)) {
-            tank1.moveTankDown();
-        }
-        if (activeKeys.contains(KeyCode.SPACE)) {
-            tank1.tankShoot(activeBullets);
+        if (tank1 != null) {
+            if (activeKeys.contains(KeyCode.W)) {
+                tank1.moveTankUp();
+            } else if (activeKeys.contains(KeyCode.A)) {
+                tank1.moveTankLeft();
+            } else if (activeKeys.contains(KeyCode.D)) {
+                tank1.moveTankRight();
+            } else if (activeKeys.contains(KeyCode.S)) {
+                tank1.moveTankDown();
+            }
+            if (activeKeys.contains(KeyCode.SPACE)) {
+                tank1.tankShoot();
+            }
         }
 
         if (tank2 != null) {
@@ -79,7 +93,7 @@ public class StatesUpdater {
                 tank2.moveTankDown();
             }
             if (activeKeys.contains(KeyCode.ENTER)) {
-                tank2.tankShoot(activeBullets);
+                tank2.tankShoot();
             }
         }
 
@@ -89,8 +103,8 @@ public class StatesUpdater {
         }
     }
 
-    private static void updateBulletsState(List<Bullet> activeBullets) {
-        Iterator<Bullet> iterator = activeBullets.iterator();
+    private static void updateBulletsState() {
+        Iterator<Bullet> iterator = GameObjectsStorage.getBulletList().iterator();
         while (iterator.hasNext()) {
             Bullet bullet = iterator.next();
             if (Math.abs(bullet.getX()) > Config.projectileRange || Math.abs(bullet.getY()) > Config.projectileRange) {

@@ -1,6 +1,7 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes;
 
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.state.GameState;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
@@ -18,7 +19,7 @@ public class MainMenuScene {
         Button buttonPlay = new Button("Play");
         Button buttonSettings = new Button("Settings");
         buttonPlay.addEventHandler(ActionEvent.ACTION, e -> {
-            switchToScene(buildGameScene(5));
+            switchToScene(buildGameScene(5, 2, GameState.GameType.KINGMOUNTAINS));
         });
         buttonSettings.addEventHandler(ActionEvent.ACTION, e -> {
             switchToScene(buildSettingsScene());
