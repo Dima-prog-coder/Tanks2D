@@ -76,11 +76,13 @@ public class Bullet extends GameObject {
                 return;
             }
             if (collideObject instanceof Tank && this.author != collideObject) { // && this.author.getTankStatus() != ((Tank) collideObject).getTankStatus()
-                removeViewGameObjectFromPane(collideObject);
-                ((Tank) collideObject).setALive(false);
-                collideObject.setX(Config.projectileRange + Config.projectileRange);
-                collideObject.setY(Config.projectileRange + Config.projectileRange);
-                GameObjectsStorage.removeGameObject(collideObject);
+                if (collideObject.getClass() != this.author.getClass()) {
+                    removeViewGameObjectFromPane(collideObject);
+                    ((Tank) collideObject).setALive(false);
+                    collideObject.setX(Config.projectileRange + Config.projectileRange);
+                    collideObject.setY(Config.projectileRange + Config.projectileRange);
+                    GameObjectsStorage.removeGameObject(collideObject);
+                }
                 this.setX(Config.projectileRange + Config.projectileRange);
                 this.setY(Config.projectileRange + Config.projectileRange);
             } else if (collideObject instanceof Wall) {

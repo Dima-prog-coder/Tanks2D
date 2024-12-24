@@ -1,10 +1,16 @@
 package com.ru.vsu.cs.dplatov.vvp.tanks2d.objects;
 
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.state.GameState;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameObjectsStorage {
+    private static int playersCnt;
+    private static int mapNumber;
+    private static GameState.GameType gameType;
+
     private static List<GameObject> gameObjects;
     private static List<Bullet> bulletList;
     private static List<Tank> userTankList;
@@ -71,4 +77,27 @@ public class GameObjectsStorage {
         bulletList.remove(bullet);
     }
 
+    public static int getMapNumber() {
+        return mapNumber;
+    }
+
+    public static void setMapNumber(int mapNumber) {
+        GameObjectsStorage.mapNumber = mapNumber;
+    }
+
+    public static int getPlayersCnt() {
+        return playersCnt;
+    }
+
+    public static void setPlayersCnt(int playersCnt) {
+        GameObjectsStorage.playersCnt = playersCnt;
+    }
+
+    public static GameState.GameType getGameType() {
+        return gameType;
+    }
+
+    public static void setGameType(GameState.GameType gameType) {
+        GameObjectsStorage.gameType = gameType;
+    }
 }

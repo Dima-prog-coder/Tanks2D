@@ -9,6 +9,7 @@ import javafx.scene.control.ToolBar;
 import javafx.event.ActionEvent;
 import javafx.stage.Screen;
 
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.ChooseScene.buildChooseScene;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.GameScene.buildGameScene;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.SceneManager.switchToScene;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.SettingsScene.buildSettingsScene;
@@ -19,7 +20,7 @@ public class MainMenuScene {
         Button buttonPlay = new Button("Play");
         Button buttonSettings = new Button("Settings");
         buttonPlay.addEventHandler(ActionEvent.ACTION, e -> {
-            switchToScene(buildGameScene(5, 2, GameState.GameType.KINGMOUNTAINS));
+            switchToScene(buildChooseScene());
         });
         buttonSettings.addEventHandler(ActionEvent.ACTION, e -> {
             switchToScene(buildSettingsScene());

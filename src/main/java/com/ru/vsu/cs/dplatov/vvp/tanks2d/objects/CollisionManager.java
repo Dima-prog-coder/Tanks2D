@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ru.vsu.cs.dplatov.vvp.tanks2d.bots.BotManager.updateBotTankDirection;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectHeight;
 import static com.ru.vsu.cs.dplatov.vvp.tanks2d.map.TransformationMatrix.calculateObjectWidth;
 
@@ -43,6 +44,9 @@ public class CollisionManager {
 
 
     public static void resolveCollision(GameObject currentGameObject, GameObject otherGameObject, Collision collisionOrientation) {
+        if (currentGameObject instanceof BotTank) {
+            updateBotTankDirection((BotTank) currentGameObject);
+        }
         switch (collisionOrientation) {
             case TOP -> {
                 while (isStillCollideGameObject(currentGameObject, otherGameObject)) {

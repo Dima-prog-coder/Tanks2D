@@ -19,11 +19,11 @@ public class Config {
     public static String bulletHorizontalImgPath = "/img/bulletHorizontal.png";
     public static String wallImgPath = "/img/wall.png";
 
-    public static int userScreenWidth = 1200;
-    public static int userScreenHeight = 1000;
+    public static int userScreenWidth = 1000;
+    public static int userScreenHeight = 800;
 
     public static int botMovementCntOneWayMax = 70;
-    public static long botRefreshingSpeed = 20_000_000;
+    public static long botRefreshingSpeed = 10_000_000;
 
     public static void setUserScreenHeight(int userScreenHeight) {
         Config.userScreenHeight = userScreenHeight;

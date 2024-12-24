@@ -147,7 +147,38 @@
                 </executions>
             </plugin>
 
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>22</source>
+                    <target>22</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <MainClass>com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game</MainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
@@ -163,17 +194,18 @@
                         <configuration>
                             <headerType>gui</headerType>
                             <outfile>target/Tanks2D-0.1-all.exe</outfile>
-                            <jar>target/${project.artifactId}-${project.version}-all.jar</jar>
+                            <jar>target/Tanks2D-1.0-SNAPSHOT-jar-with-dependencies.jard</jar>
                             <errTitle>${project.artifactId}</errTitle>
                             <!--icon>favicon.ico</icon-->
                             <classPath>
-                                <mainClass>${mainClass}</mainClass>
+                                <mainClass>com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Game</mainClass>
                                 <addDependencies>true</addDependencies>
                                 <preCp>anything</preCp>
                             </classPath>
                             <jre>
-                                <minVersion>${maven.compiler.target}</minVersion>
+                                <minVersion>22</minVersion>
                             </jre>
+                            <bundledJrePath>/home/dima/.jdks/corretto-22.0.2</bundledJrePath>
                             <versionInfo>
                                 <fileVersion>${project.version}.0.0</fileVersion>
                                 <txtFileVersion>${project.name}</txtFileVersion>

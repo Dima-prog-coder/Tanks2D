@@ -6,6 +6,7 @@ import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.BotTank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Wall;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.state.GameState;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -58,18 +59,25 @@ public class GameMap {
         return wallList;
     }
 
-    public static List<GameObject> createMap5(Pane pane) {
+    public static List<GameObject> createMap5(Pane pane, GameState.GameType gameType, int playersCnt) {
         List<GameObject> gameObjects = new ArrayList<>();
         Image imageTank1 = new Image(Game.class.getResourceAsStream(Config.tank1ImgPath));
         Image imageTank2 = new Image(Game.class.getResourceAsStream(Config.tank2ImgPath));
         gameObjects.add(new Tank(0, 0, new ImageView(imageTank1)));
-        gameObjects.add(new Tank(0, 0.2, new ImageView(imageTank1)));
+        if (playersCnt == 2) {
+            gameObjects.add(new Tank(0, 0.2, new ImageView(imageTank1)));
+            gameObjects.add(new BotTank(0.6, -0.4, new ImageView(imageTank2)));
+            gameObjects.add(new BotTank(-0.7, 0.6, new ImageView(imageTank2)));
+            gameObjects.add(new BotTank(0.1, -0.3, new ImageView(imageTank2)));
+            gameObjects.add(new BotTank(-0.5, 0.2, new ImageView(imageTank2)));
+            gameObjects.add(new BotTank(0.4, -0.7, new ImageView(imageTank2)));
+        }
         gameObjects.add(new BotTank(-0.8, 0.7, new ImageView(imageTank2)));
         gameObjects.add(new BotTank(0.5, -0.6, new ImageView(imageTank2)));
         gameObjects.add(new BotTank(-0.3, 0.4, new ImageView(imageTank2)));
         gameObjects.add(new BotTank(0.7, 0.1, new ImageView(imageTank2)));
         gameObjects.add(new BotTank(-0.2, -0.8, new ImageView(imageTank2)));
-        gameObjects.add(new BotTank(0.6, -0.4, new ImageView(imageTank2)));
+
 //        gameObjects.add(new Tank(-0.7, 0.6, new ImageView(imageTank2)));
 //        gameObjects.add(new Tank(0.1, -0.3, new ImageView(imageTank2)));
 //        gameObjects.add(new Tank(-0.5, 0.2, new ImageView(imageTank2)));

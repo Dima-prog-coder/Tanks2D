@@ -36,10 +36,12 @@ public class GameScene {
         TransformationMatrix.setScene(scene);
         // starting collisions
         CollisionManager.setScene(scene);
+        // gameStorage first write
+        GameObjectsStorage.setGameType(gameType);
+        GameObjectsStorage.setMapNumber(mapNumber);
+        GameObjectsStorage.setPlayersCnt(playerCnt);
         // getting objects(with correct cords) to add it to pane
         List<GameObject> gameObjects = createGameObjects(mapNumber);
-        // gameType set
-        GameState.setGameType(gameType);
         // adding gameObjects to storage
         GameObjectsStorage.setGameObjects(gameObjects);
         // adding objects to pane(by list)
@@ -57,7 +59,7 @@ public class GameScene {
             case 2 -> GameMap.createMap2(pane);
             case 3 -> GameMap.createMap3(pane);
             case 4 -> GameMap.createMap4(pane);
-            case 5 -> GameMap.createMap5(pane);
+            case 5 -> GameMap.createMap5(pane, GameObjectsStorage.getGameType(), GameObjectsStorage.getPlayersCnt());
             case 6 -> GameMap.createMap6(pane);
             case 7 -> GameMap.createMap7(pane);
             default -> throw new MapNotFoundException("Карта не была найдена");

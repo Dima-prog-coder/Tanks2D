@@ -27,6 +27,14 @@ public class BotManager {
                     }
                 });
     }
+
+    public static void updateBotTankDirection(BotTank botTank) {
+        int botTankWay = botTank.getCurrentWay();
+        do {
+            botTank.setCurrentWay(random.nextInt(4));
+        } while (botTankWay == botTank.getCurrentWay());
+        botTank.setCntOnThisWay(random.nextInt(Config.botMovementCntOneWayMax));
+    }
 }
 
 

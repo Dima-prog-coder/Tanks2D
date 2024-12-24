@@ -4,6 +4,7 @@ import com.ru.vsu.cs.dplatov.vvp.tanks2d.bots.BotManager;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.controllers.Controllers;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.core.Config;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Bullet;
+import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObject;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.GameObjectsStorage;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.objects.Tank;
 import com.ru.vsu.cs.dplatov.vvp.tanks2d.scenes.SceneManager;
@@ -32,7 +33,7 @@ public class StatesUpdater {
                 if (now - lastUpdate >= 1_000_000_000 / TARGET_FPS) {
                     lastUpdate = now;
                     GameState.GameStatus gameStatus = checkGameStatus();
-                    if (gameStatus != GameState.GameStatus.GAME) {  
+                    if (gameStatus != GameState.GameStatus.GAME) {
                         switch (gameStatus) {
                             case WIN -> {
                                 timer.stop();
@@ -44,7 +45,7 @@ public class StatesUpdater {
                             }
                         }
                     }
-                    updateTanksState(Controllers.getActiveKeys(), GameObjectsStorage.getUserTankList().get(0), GameObjectsStorage.getUserTankList().get(1));
+                    updateTanksState(Controllers.getActiveKeys(), GameObjectsStorage.getUserTankList().get(0), GameObjectsStorage.getUserTankList().size() == 2 ? GameObjectsStorage.getUserTankList().get(1) : null);
 
 
                     updateBulletsState();
